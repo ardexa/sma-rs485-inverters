@@ -1,0 +1,12 @@
+[DriverModules]
+Driver0=yasdi_drv_serial
+
+[COM1]
+Device=/dev/ttyUSB0
+Media=RS485
+Baudrate=1200
+Protocol=SMANet
+
+[Misc]
+DebugOutput=stdout
+

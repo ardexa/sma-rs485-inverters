@@ -1,0 +1,11 @@
+[Unit]
+Description=Ardexa SMA service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/ardexa-sma -c /home/ardexa/yasdi.conf -n 13 -s 300
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
