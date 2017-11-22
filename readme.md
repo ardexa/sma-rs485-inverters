@@ -15,7 +15,10 @@ Usage: sudo ardexa-sma -c conf file path -n number of devices [-l log directory]
 -s (optional) delay between readings. Default is 60 seconds. Ignored during discovery (-i option).
 -n (mandatory) number of devices to find. Must be at least 1, and less than 40.
 ```
+
 The only 2 mandatory items are the number of inverters (`-n`) and the configuration file `-c`. So an example of the usage is : `sudo ardexa-sma -c /home/ardexa/yasdi.conf -n 1`
+So for example, to run a discovery:
+	sudo ardexa-sma -c yasdi.conf -n 1 -i
 
 ## RS485 to USB converter
 The SMA (as most inverters) can use RS485 as a means to communicate data and settings
@@ -63,13 +66,13 @@ sudo apt-get install -y build-essentials git cmake
 then install the YASDI software
 ```
 cd
-mkdir sma
-cd sma
+mkdir yasdi
+cd yasdi
 ...from http://www.sma.de/en/products/monitoring-control/yasdi.html#Downloads
 wget yasdi-1.8.1build9-src.zip
 unzip yasdi-1.8.1build9-src.zip
 cd projects/generic-cmake
-edit the file ../sma/include/packet.h and change Line 38: from struct TDevice * Device ...to.... struct _TDevice * Device
+edit the file ../yasdi/include/packet.h and change Line 38: from struct TDevice * Device ...to.... struct _TDevice * Device
 mkdir build-gcc
 cd build-gcc
 cmake ..
@@ -93,7 +96,7 @@ sudo yasdishell yasdi.conf ... just to test
 In the 'yasdi.conf' file above, change the 'Device=...' to whatever the device name is, as per the instructions above.
 
 ## Building the Ardexa software
-
+- Make sure the YASDI application is in the directory above `../sma/`
 ```
 cd
 git clone https://github.com/ardexa/sma-rs485-inverters.git
