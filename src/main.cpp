@@ -328,7 +328,7 @@ void process_data(vector <vec_data> data_vector, int debug, string& line, string
             pdc1_str = value;
         }
 
-        if (name == "A.Ms.Watt") {
+        if (name == "B.Ms.Watt") {
             pdc2_header = name_units;
             pdc2_str = value;
         }
