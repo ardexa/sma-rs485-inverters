@@ -22,15 +22,18 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
 
 # Set the project name
-PROJECT( ardexa-sma)
+PROJECT(ardexa-sma)
 
 # Set the output folder where your program will be created
 set(CMAKE_BINARY_DIR .)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # Source files
-set(ARDEXA_SMA_SRC   src/main.cpp src/arguments.cpp src/utils.cpp)
-set_source_files_properties(${ARDEXA_SMA_SRC} PROPERTIES LANGUAGE CXX )
+set(ARDEXA_SMA_SRC
+    src/main.cpp
+    src/arguments.cpp
+    src/utils.cpp
+)
 
 # Include directories
 include_directories(
@@ -50,12 +53,8 @@ if(UNIX)
 endif()
 
 # Build the application
-add_executable(ardexa-sma           ${ARDEXA_SMA_SRC})
+add_executable(ardexa-sma ${ARDEXA_SMA_SRC})
 TARGET_LINK_LIBRARIES(ardexa-sma dl pthread yasdi yasdimaster)
-SET_TARGET_PROPERTIES(ardexa-sma PROPERTIES LINKER_LANGUAGE CXX)
 
 # add the install targets
 install (TARGETS ardexa-sma DESTINATION /usr/local/bin)
-
-
-

@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (c) 2013-2017 Ardexa Pty Ltd
 *
 * This code is licensed under the MIT License (MIT).
@@ -26,7 +26,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <signal.h>
-#include <algorithm>  
+#include <algorithm>
 
 #define DATESIZE 64
 #define DOUBLE_SIZE 64

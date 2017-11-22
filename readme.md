@@ -117,6 +117,3 @@ sudo systemctl enable ardexa-sma.service
 sudo systemctl daemon-reload
 sudo systemctl restart ardexa-sma.service
 ```
-
-
-
