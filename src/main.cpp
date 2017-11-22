@@ -40,7 +40,7 @@ extern "C" {
 
 
 #define DEVICE_MAX 50
-#define NAME 64
+#define SIZE_NAME 64
 #define MAXDRIVERS 10
 #define MAX_CHANNEL_COUNT 500
 
@@ -100,19 +100,19 @@ bool detect_devices( int device_count)
 void record_devices(map <DWORD, string> &device_map, bool discovery)
 {
     DWORD handles_array[DEVICE_MAX], device, count = -1;
-    char namebuf[NAME] = "";
+    char namebuf[SIZE_NAME] = "";
 
     /* Clear the map */
     device_map.clear();
 
     /* get all device handles...*/
-    count   = GetDeviceHandles(handles_array, DEVICE_MAX );
+    count   = GetDeviceHandles(handles_array, DEVICE_MAX);
     if (count > 0) {
         for (device=0; device < count ; device++) {
             /* get the name of this device */
             GetDeviceName(handles_array[device], namebuf, sizeof(namebuf)-1);
             if ((g_debug) or (discovery)) cout << "Found device with a handle of : " << handles_array[device] << " and a name of: " << namebuf << "\n" << endl;
-            string device_raw = namebuf;
+            string device_raw = string(namebuf);
             string device_name = replace_spaces(device_raw);
             /* Add it to the map */
             device_map[handles_array[device]] = device_name;
@@ -131,9 +131,9 @@ bool fetch_dynamic_data(DWORD device_handle, string *header_out, string *data_ou
 {
     DWORD channel_array[MAX_CHANNEL_COUNT];
     int channel_count = -1;
-    char channel_name[NAME];
-    char channel_units[NAME];
-    char channel_value[NAME];
+    char channel_name[SIZE_NAME];
+    char channel_units[SIZE_NAME];
+    char channel_value[SIZE_NAME];
     string header_entry;
     int result;
     string channel_value_str;
@@ -253,7 +253,7 @@ string list_texts(DWORD channel_handle, string channel_name)
     if (text_count) {
         cout << "Channel name has the following text options (these names are raw from the SMA device): " << endl;
         for(i=0; i < text_count; i++) {
-            char stat_text[NAME];
+            char stat_text[SIZE_NAME];
             GetChannelStatText(channel_handle, i, stat_text, sizeof(stat_text)-1);
             cout << "\tChannel name: " << channel_name << " has the text: " << stat_text << "\n";
         }
@@ -441,7 +441,7 @@ int main(int argc, char *argv[])
 {
     DWORD drivers = 0;
     int result = 0;
-    char DriverName[NAME];
+    char DriverName[SIZE_NAME];
     bool any_driver = false;
     DWORD Driver[MAXDRIVERS];
     map <DWORD, string> device_map;

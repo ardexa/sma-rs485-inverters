@@ -217,17 +217,10 @@ string convert_double(double number)
 }
 
 /* replace all spaces in a string with an underscore */
-string replace_spaces(string incoming)
+string replace_spaces(string text)
 {
-    string outgoing = incoming;
-    /* find first space */
-    unsigned int position = outgoing.find(" ");
-
-    while( position != string::npos )  {
-        outgoing.replace( position, 1, "_" );
-        position = outgoing.find(" ", position + 1 );
-    }
-    return outgoing;
+    std::replace(text.begin(), text.end(), ' ', '_');
+    return text;
 }
 
 bool check_root()
