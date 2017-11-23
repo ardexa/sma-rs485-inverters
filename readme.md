@@ -60,19 +60,19 @@ The YASDI software (See: http://www.sma.de/en/products/monitoring-control/yasdi.
 You may need to install all the build tools as follows
 ```
 sudo apt-get update
-sudo apt-get install -y build-essentials git cmake
+sudo apt-get install -y build-essential git cmake
 ```
 
 then install the YASDI software
 ```
 cd
-mkdir yasdi
-cd yasdi
+mkdir sma
+cd sma
 ...from http://www.sma.de/en/products/monitoring-control/yasdi.html#Downloads
 wget yasdi-1.8.1build9-src.zip
 unzip yasdi-1.8.1build9-src.zip
-cd projects/generic-cmake
 edit the file ../yasdi/include/packet.h and change Line 38: from struct TDevice * Device ...to.... struct _TDevice * Device
+cd projects/generic-cmake
 mkdir build-gcc
 cd build-gcc
 cmake ..
@@ -106,6 +106,7 @@ cd build
 cmake ..
 make
 sudo make install
+sudo ldconfig
 ```
 
 ## Installing as a Service
