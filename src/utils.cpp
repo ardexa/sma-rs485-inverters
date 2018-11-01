@@ -126,7 +126,7 @@ string get_current_datetime()
     timeinfo = localtime(&rawtime);
 
     /* This includes the time zone at the end of the time */
-    strftime(buffer, DATESIZE, "%H:%M:%S", timeinfo);
+    strftime(buffer, DATESIZE, "%H:%M:%S%z", timeinfo);
 
     string time(buffer);
 
