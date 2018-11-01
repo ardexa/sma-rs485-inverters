@@ -521,7 +521,7 @@ int main(int argc, char *argv[])
             }
             else {
                 /* Only log a line if it was a success */
-                if (success_read) {
+                if (success_read && !data.empty()) {
                     /* Log the line based on the inverter name, in the logging directory */
                     string full_dir = arguments_list.get_log_directory() + "/" + it->second;
                     /* log to a date and to a 'latest' file */
