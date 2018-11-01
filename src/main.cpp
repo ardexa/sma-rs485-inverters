@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2017 Ardexa Pty Ltd
+ * Copyright (c) 2013-2018 Ardexa Pty Ltd
  *
  * This code is licensed under the MIT License (MIT).
  *
