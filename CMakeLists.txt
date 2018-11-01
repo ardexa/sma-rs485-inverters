@@ -1,5 +1,5 @@
-# 
-# Copyright (c) 2013-2017 Ardexa Pty Ltd
+#
+# Copyright (c) 2013-2018 Ardexa Pty Ltd
 #
 # This code is licensed under the MIT License (MIT).
 #
@@ -37,14 +37,14 @@ set(ARDEXA_SMA_SRC
 
 # Include directories
 include_directories(
-	../sma/include 
-	../sma/core 
-	../sma/smalib 
-	../sma/os 
-	../sma/protocol 
-	../sma/master 
-	../sma/libs 
-	../sma/projects/generic-cmake/incprj 
+	../sma/include
+	../sma/core
+	../sma/smalib
+	../sma/os
+	../sma/protocol
+	../sma/master
+	../sma/libs
+	../sma/projects/generic-cmake/incprj
 )
 
 if(UNIX)
