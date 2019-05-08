@@ -26,6 +26,9 @@ extern "C" {
 }
 #endif
 
+#undef min 
+#undef max
+
 #include <iostream>
 #include <stdio.h>
 #include <unistd.h>
