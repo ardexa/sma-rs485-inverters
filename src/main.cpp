@@ -271,33 +271,38 @@ string list_texts(DWORD channel_handle, string channel_name)
 void process_data(vector <vec_data> data_vector, int debug, string& line, string& header)
 {
     string pac_header, yield_header, pdc1_header, pdc2_header, vdc1_header, vdc2_header, vac1_header, vac2_header, vac3_header, iac1_header, iac2_header, iac3_header, idc1_header, idc2_header;
-    string pac1_header, pac2_header, pac3_header, gridfreq_header, cosphi_header, mode_header, error_header;
+    string pac1_header, pac2_header, pac3_header, gridfreq_header, cosphi_header, mode_header, error_header, op_hours_header, isol_header;
     string pac_str, yield_str, pdc1_str, pdc2_str, vdc1_str, vdc2_str, vac1_str, vac2_str, vac3_str, iac1_str, iac2_str, iac3_str, idc1_str, idc2_str;
-    string pac1_str, pac2_str, pac3_str, gridfreq_str , cosphi_str, mode_str, error_str;
+    string pac1_str, pac2_str, pac3_str, gridfreq_str , cosphi_str, mode_str, error_str, op_hours_str, isol_str;
 
+    
 
     /* For a 3 Phase inverter, these are the values we need ....
        A.Ms.Amp					String A Current	decimal		A			eg; 2.84
        B.Ms.Amp					String B Current	decimal		A			eg; 0.93
        A.Ms.Vol					String A Voltage	decimal		V			eg; 455.40
        B.Ms.Vol					String B Voltage	decimal		V			eg; 445.37
-       A.Ms.Watt				String A Power 	integer		W			eg; 1295
-       B.Ms.Watt				String B Power 	integer		W			eg; 415
-       grid power				AC Power				integer		W			eg; 1635
+       A.Ms.Watt				String A Power 	    integer		W			eg; 1295
+       B.Ms.Watt				String B Power 	    integer		W			eg; 415
+       grid power				AC Power			integer		W			eg; 1635
        GridMs.W.phsA			AC Power 1			integer		W			eg; 545
        GridMs.W.phsB			AC Power 2			integer		W			eg; 545
        GridMs.W.phsC			AC Power 3			integer		W			eg; 545
-       GridMs.PhV.phsA		AC Voltage 1		decimal		V			eg; 234.82
-       GridMs.PhV.phsB		AC Voltage 2		decimal		V			eg; 234.99
-       GridMs.PhV.phsC		AC Voltage 3		decimal		V			eg; 236.12
+       GridMs.PhV.phsA		    AC Voltage 1		decimal		V			eg; 234.82
+       GridMs.PhV.phsB		    AC Voltage 2		decimal		V			eg; 234.99
+       GridMs.PhV.phsC		    AC Voltage 3		decimal		V			eg; 236.12
        GridMs.A.phsA			AC Current 1		decimal		A			eg; 2.32
        GridMs.A.phsB			AC Current 2		decimal		A			eg; 2.32
        GridMs.A.phsC			AC Current 3		decimal		A			eg; 2.31
        GridMs.Hz				Grid Freq			decimal		Hz			eg; 50
-       GridMs.TotPF			Cos Phi				keyword					eg; 1 ... beware, this may not be a number
-       energy yield			Energy Yield		decimal		kWh		eg; 43483.59
+       GridMs.TotPF			    Cos Phi				keyword					eg; 1 ... beware, this may not be a number
+       energy yield			    Energy Yield		decimal		kWh		    eg; 43483.59   ###################################### check this is converted to Wh #########################
        Mode						Status				keyword					eg; Mpp
-       Error						Error					keyword					eg; ok
+       Error				    Error				keyword					eg; ok
+       Operating Hours          OPerating Hours     decimal     h           eg; 1234.5
+       Isolation Resistance     Iso Resist          decimal     kOhm        eg; 3000
+       
+
        */
 
 
@@ -306,7 +311,7 @@ void process_data(vector <vec_data> data_vector, int debug, string& line, string
         string name_units = iter->name_units;
         string name = iter->name;
 
-        if (name == "A.Ms.Amp") {
+        if ((name == "A.Ms.Amp") or (name == "pv panels current")) {
             idc1_header = name_units;
             idc1_str = value;
         }
@@ -316,7 +321,7 @@ void process_data(vector <vec_data> data_vector, int debug, string& line, string
             idc2_str = value;
         }
 
-        if (name == "A.Ms.Vol") {
+        if ((name == "A.Ms.Vol") or (name == "pv input voltage")) {
             vdc1_header = name_units;
             vdc1_str = value;
         }
@@ -356,7 +361,7 @@ void process_data(vector <vec_data> data_vector, int debug, string& line, string
             pac3_str = value;
         }
 
-        if (name == "GridMs.PhV.phsA") {
+        if ((name == "GridMs.PhV.phsA") or (name == "grid voltage")) {
             vac1_header = name_units;
             vac1_str = value;
         }
@@ -371,7 +376,7 @@ void process_data(vector <vec_data> data_vector, int debug, string& line, string
             vac3_str = value;
         }
 
-        if (name == "GridMs.A.phsA") {
+        if ((name == "GridMs.A.phsA") or (name == "current to grid")) {
             iac1_header = name_units;
             iac1_str = value;
         }
@@ -391,7 +396,7 @@ void process_data(vector <vec_data> data_vector, int debug, string& line, string
             yield_str = value;
         }
 
-        if (name == "GridMs.Hz") {
+        if ((name == "GridMs.Hz") or (name == "grid freq")) {
             gridfreq_header = name_units;
             gridfreq_str = value;
         }
@@ -401,26 +406,51 @@ void process_data(vector <vec_data> data_vector, int debug, string& line, string
             cosphi_str = value;
         }
 
-        if (name == "Mode") {
+        if ((name == "Mode") or (name == "Status")) {
             mode_header = name_units;
             mode_str = value;
         }
 
-        if (name == "Error") {
+        if ((name == "Error") or (name == "error")) {
             error_header = name_units;
             error_str = value;
         }
 
+        if ((name == "total operating hours")) {
+            op_hours_header = name_units;
+            op_hours_str = value;
+        }
+
+        if ((name == "isol-resist")) {
+            isol_header = name_units;
+            isol_str = value;
+
+            // Convert "isol_str" to a float
+            size_t idx;
+            float resist;
+            try {
+                resist = stof(isol_str, &idx);
+            }
+            catch ( const std::exception& e ) {
+                cout << "Could not convert isol_str value to a float: " << isol_str << endl;
+            }
+            resist = resist/1000;
+            stringstream stream;
+            stream << fixed << setprecision(2) << resist;
+            isol_str = stream.str();
+        }
 
 
         string datetime = get_current_datetime();
         header = "#Datetime," + pac_header + "," + yield_header + "," + pdc1_header  + "," + pdc2_header + "," + vdc1_header + "," +
             vdc2_header + "," + vac1_header + "," + vac2_header + "," + vac3_header + "," + iac1_header + "," + iac2_header + "," + iac3_header + "," +
-            idc1_header + "," + idc2_header + "," + pac1_header + "," + pac2_header + "," + pac3_header + "," + gridfreq_header + "," + cosphi_header + "," + mode_header + "," + error_header;
+            idc1_header + "," + idc2_header + "," + pac1_header + "," + pac2_header + "," + pac3_header + "," + gridfreq_header + "," + cosphi_header + "," + 
+            mode_header + "," + error_header + "," + op_hours_header + "," + isol_header;
 
         line = datetime + "," + pac_str + "," + yield_str + "," + pdc1_str + "," + pdc2_str + "," + vdc1_str + "," + vdc2_str + "," +
             vac1_str + "," + vac2_str + "," + vac3_str + "," + iac1_str + "," + iac2_str + "," + iac3_str + "," +
-            idc1_str + "," + idc2_str + "," + pac1_str + "," + pac2_str + "," + pac3_str + "," + gridfreq_str + "," + cosphi_str + "," + mode_str + "," + error_str;
+            idc1_str + "," + idc2_str + "," + pac1_str + "," + pac2_str + "," + pac3_str + "," + gridfreq_str + "," + cosphi_str + "," + mode_str + "," + 
+            error_str + "," + op_hours_str + "," + isol_str;
 
 
         if (debug >= 1) {

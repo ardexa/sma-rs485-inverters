@@ -27,7 +27,7 @@ using namespace std;
 #define DEFAULT_DEBUG_VALUE 0
 #define DEFAULT_LOG_DIRECTORY "/opt/ardexa/sma/logs"
 #define DEFAULT_CONF_DIRECTORY "/home/ardexa"
-#define VERSION 1.12
+#define VERSION 1.14
 #define DELAY 60
 
 extern int g_debug;
